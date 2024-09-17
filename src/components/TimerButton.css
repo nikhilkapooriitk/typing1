@@ -1,0 +1,24 @@
+.timer-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: baseline;
+    padding: 1px;
+    border: 1px solid #000000;
+    border-radius: 5 px;
+  }
+  
+  .time-display {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .arrow-buttons {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .arrow-buttons button {
+    height: 50%;
+  }

@@ -1,0 +1,1 @@
+export const DEFAULT_TEST_TIME = 10;

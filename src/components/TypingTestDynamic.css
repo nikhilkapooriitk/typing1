@@ -1,0 +1,99 @@
+.container {
+  max-width: auto;
+  margin: 0 auto;
+  padding: auto;
+}
+
+.text-center {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.timer-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.text-container {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+  height: 50vh;
+  width: 100%;
+  overflow: auto;
+  position: relative;
+}
+
+.typing-text {
+  margin-top: 33px;
+}
+
+.word {
+  margin-right: 4px;
+}
+
+.word-untyped {
+  color: black;
+}
+
+.word-correct {
+  color: green;
+}
+
+.word-incorrect {
+  color: red;
+}
+
+.word-current {
+  background-color: yellow;
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1vh;
+  width: 100%;
+}
+
+.typing-input {
+  width: 90%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding-bottom: 1px;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.popup-content {
+  text-align: center;
+}
+
+.popup-content h2 {
+  margin-bottom: 20px;
+}
+
+.popup-content button {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.popup-content button:hover {
+  background: #0056b3;
+}

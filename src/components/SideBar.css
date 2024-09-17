@@ -1,0 +1,51 @@
+
+
+.sidebar {
+    width: 206px;
+    height: 100%;
+    /* position: fixed; */
+    top: 0;
+    left: 0;
+    /* padding-top: 60px; */
+    background-color: #fde2e2;
+    
+    background-color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar nav li {
+    padding: 10px 0;
+    cursor: pointer;
+    margin-left: 20px;
+  }
+
+.sidebar nav li.active {
+    color: var(--primary-color);
+  }
+  
+  .sidebar nav ul {
+    list-style-type:circle;
+    padding: 0;
+  }
+
+.labels .label {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    font-size: 0.8em;
+    margin-right: 5px;
+  }
+
+  .project-icon {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    margin-bottom: 5 px;
+    margin-top: 5 px;
+}
+
+.list-group {
+    font-family: 'Pacifico', monospace;
+}

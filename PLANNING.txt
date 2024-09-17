@@ -1,0 +1,2 @@
+Implement the typing speed count
+Implement the typing games
