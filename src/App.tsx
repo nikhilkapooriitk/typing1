@@ -1,12 +1,15 @@
 import { useState, forwardRef, useRef, ForwardedRef } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import TimerButton from "./components/TimerButton";
 import TypingTestDynamic from "./components/TypingTestDynamic";
 import Sidebar from "./components/SideBar";
 import Header from "./components/Header";
 import GameWindow from "./components/GameWindow";
+import LiveTypingTest from "./components/LiveTypingTest";
 import "./App.css";
 import "@mantine/core/styles.css";
+import Parent from "./components/ExampleLearning";
+
 
 import { MantineProvider } from "@mantine/core";
 import Footer from "./components/Footer";
@@ -32,7 +35,7 @@ function App() {
               <Route path="/" element={<TypingTestDynamic />} />
               <Route path="/learning" element={<div>Learning Section</div>} />
               <Route path="/games" element={<GameWindow />} />
-              <Route path="/live-test" element={<div>Live Test Section</div>} />
+              <Route path="/live-test" element={<LiveTypingTest />} />
               <Route
                 path="/tricky-keys"
                 element={<div>Tricky Keys Section</div>}

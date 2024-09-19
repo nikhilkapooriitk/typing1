@@ -7,8 +7,8 @@ interface TimerButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   updateIsTimerRunning: React.Dispatch<React.SetStateAction<number>>;
   handleTimerEnd?: () => void;
   provideCurrentTime?: (input:number) => void;
+  setTime: React.Dispatch<React.SetStateAction<number>>; // Add this line
 }
-
 
 const TimerButton = ({
   initialTime,
@@ -16,43 +16,44 @@ const TimerButton = ({
   updateIsTimerRunning,
   handleTimerEnd,
   provideCurrentTime,
+  setTime, // Add this line
 }: TimerButtonProps) => {
-  const [time, setTime] = useState(initialTime);
+  // Remove the local time state
+  // const [time, setTime] = useState(initialTime);
 
-  // will run and update time, when isTimerRunning starts. Will pause, when isTimerRunning is 0
   useEffect(() => {
     if (isTimerRunning) {
       const interval = setInterval(() => {
-        setTime(time - 1);
+        setTime(prevTime => prevTime - 1); // Use setTime from props
         updateIsTimerRunning(isTimerRunning + 1);
-        provideCurrentTime?.(time);
+        provideCurrentTime?.(initialTime); // Use initialTime instead of time
       }, 1000);
 
-      if (time === 0 || isTimerRunning === 0) {
-        if(time === 0) {
+      if (initialTime === 0 || isTimerRunning === 0) { // Use initialTime instead of time
+        if(initialTime === 0) { // Use initialTime instead of time
           handleTimerEnd?.();
         }
         clearInterval(interval);
       }
       return () => clearInterval(interval);
     }
-  }, [isTimerRunning]);
+  }, [isTimerRunning, initialTime]); // Add initialTime to dependencies
 
   // will increment time by 60 seconds
   const handleIncrement = () => {
-    const newTime = time + 60;
+    const newTime = initialTime + 60;
     setTime(newTime);
   };
 
   // will decrement time by 60 seconds
   const handleDecrement = () => {
-    if (time > 0) {
-      const newTime = time - 60;
+    if (initialTime > 0) {
+      const newTime = initialTime - 60;
       setTime(newTime);
     }
   };
 
-  const formattedTime = `${Math.floor(time / 60)}:${(time % 60)
+  const formattedTime = `${Math.floor(initialTime / 60)}:${(initialTime % 60)
     .toString()
     .padStart(2, "0")}`;
 

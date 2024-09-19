@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import "./ResultPopUp.css";
+import { DEFAULT_TEST_TIME } from '../CONSTANTS';
 
 interface ResultPopUpProps{
     testStartTime:number;
@@ -9,9 +10,10 @@ interface ResultPopUpProps{
     turnOffPopup?:() => void;
     actualWords:string[];
     wordsTyped:string[];
+    resetTimer: (newTime: number) => void; // Add this line
 }
 
-function ResultPopUp({testStartTime, currentWordIndex, wordCorrectnessList, turnOffPopup, actualWords, wordsTyped, isSummaryRequired}:ResultPopUpProps){ 
+function ResultPopUp({testStartTime, currentWordIndex, wordCorrectnessList, turnOffPopup, actualWords, wordsTyped, isSummaryRequired, resetTimer}:ResultPopUpProps){ 
     const popupRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -58,6 +60,11 @@ function ResultPopUp({testStartTime, currentWordIndex, wordCorrectnessList, turn
     const effectiveWpm = wordCorrectnessList.filter(Boolean).length * 60/testStartTime;
     const accuracy = wordCorrectnessList.filter(Boolean).length * 100/ currentWordIndex;
 
+    const handleRestart = () => {
+        turnOffPopup?.();
+        resetTimer(DEFAULT_TEST_TIME);
+    };
+
     return (
     <div className="popup" ref={popupRef}>
         <div className="popup-content resizable">
@@ -77,6 +84,7 @@ function ResultPopUp({testStartTime, currentWordIndex, wordCorrectnessList, turn
         )}
 
 
+        <button onClick={handleRestart}>Restart</button>
         {turnOffPopup && <button onClick={turnOffPopup}>Close</button>}
         </div>
     </div>

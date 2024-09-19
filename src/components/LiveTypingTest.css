@@ -1,0 +1,49 @@
+.textAndInputContainer {
+  display: flex;
+  height: 70vh; /* Adjust this value as needed */
+  gap: 20px; /* Space between containers */
+}
+
+.text-container{
+    flex: 1;
+    border: 1px solid #a1a1a1;
+    padding: 20px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .typing-input {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    padding-top: 53px;
+    border: 1px solid #a1a1a1;
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+  }
+
+.inputOuterContainer{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-container {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 20px;
+  height: 100%;
+}
+
+.input-container {
+  justify-content: center;
+}
+
+/* Remove or adjust these properties */
+.text-container,
+.input-container {
+  height: auto; /* Remove fixed height */
+  margin-bottom: 0; /* Remove margin */
+}
