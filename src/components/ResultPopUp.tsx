@@ -78,8 +78,7 @@ function ResultPopUp({testStartTime, currentWordIndex, wordCorrectnessList, turn
         {isSummaryRequired && (
             <div>
                 <h3>Summary:</h3>
-                <p>Words you typed correctly: {actualWords.filter((_, index) => wordCorrectnessList[index]).join(" ")}</p>
-                <p>Where did you miss: {actualWords.slice(0, currentWordIndex).filter((_, index) => !wordCorrectnessList[index]).join(" ")}</p>
+                <p>Mistakes: {actualWords.slice(0, currentWordIndex).filter((_, index) => !wordCorrectnessList[index]).join(" ")}</p>
             </div>
         )}
 

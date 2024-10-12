@@ -3,15 +3,38 @@ import TimerButton from "./TimerButton";
 import { DEFAULT_TEST_TIME } from "../CONSTANTS";
 import "./TypingTestDynamic.css";
 import ResultPopUp from "./ResultPopUp";
-import useSound from 'use-sound';
-import mySound from './../assets/typingSound1.mp3';
+import useSound from "use-sound";
+import mySound from "./../assets/typingSound1.mp3";
+// Import TypingData.json file
+import typingData from "../assets/TypingData.json";
 
 function TypingTestDynamic() {
   const [userInput, setUserInput] = useState("");
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const sampleText =
-    "The early years of the 20th century witnessed a surge in nationalist sentiment, culminating in the Non-Cooperation Movement and the Civil Disobedience Movement led by Mahatma Gandhi. These movements, characterized by peaceful protests and civil disobedience, galvanized the Indian people and posed a serious challenge to British rule. The Second World War marked a turning point in India's struggle for independence. While India supported the Allied cause, the British government's refusal to grant self-rule after the war fueled resentment and discontent. The Quit India Movement (1942) launched by Gandhi called for the immediate withdrawal of British forces from India. Although the movement was brutally suppressed, it demonstrated the unwavering determination of the Indian people to achieve freedom. The post-war years were marked by intense negotiations between Indian leaders and the British government. The Cabinet Mission Plan of 1946, aimed at partitioning India into Hindu-majority and Muslim-majority states, failed to satisfy all parties. Ultimately, the Mountbatten Plan of 1947 led to the partition of India into India and Pakistan, accompanied by a massive exchange of populations and widespread violence. On August 15, 1947, India achieved independence, becoming a sovereign and democratic republic. Jawaharlal Nehru, a prominent leader of the Indian National Congress, became the country's first Prime Minister. The task of nation-building was immense, with challenges such as integrating diverse regions, addressing economic disparities, and fostering social harmony.India's journey towards independence was a testament to the resilience and unity of its people. Despite facing numerous obstacles, the Indian people persevered in their pursuit of freedom and self-determination. The legacy of India's independence continues to inspire people around the world, serving as a beacon of hope and a reminder of the power of peaceful resistance.";
+  // initial sample text would be any random medium difficulty text from any category
+  const textDifficultyLevelList = Object.keys(typingData);
+  const textCategoryList = Object.keys(typingData.Medium);
+
+  // select a random textDifficultyLevel value
+  const randomDifficultyKey = Object.keys(typingData)[
+    Math.floor(Math.random() * Object.keys(typingData).length)
+  ] as keyof typeof typingData; // Ensure the key is a valid key of typingData
+  // select a random category key from the selected difficulty level
+  const randomCategoryKey = textCategoryList[
+    Math.floor(Math.random() * textCategoryList.length)
+  ] as keyof (typeof typingData)[typeof randomDifficultyKey];
+
+  const randomTextIndex = Math.floor(Math.random() * typingData[randomDifficultyKey][randomCategoryKey].length);
+
+  const [sampleText, setSampleText] = useState(
+    typingData[randomDifficultyKey][randomCategoryKey][randomTextIndex]
+  );
+  const [sampleTextCategory, setSampleTextCategory] =
+    useState(randomCategoryKey);
+  const [sampleTextDifficulty, setSampleTextDifficulty] =
+    useState(randomDifficultyKey);
   const words = sampleText.split(" ");
+
   const [wordCorrectnessList, setWordCorrectnessList] = useState<boolean[]>(
     Array(words.length).fill(false)
   );
@@ -31,8 +54,21 @@ function TypingTestDynamic() {
   const soundStartedRef = useRef(false);
 
   const [isSoundSelected, setIsSoundSelected] = useState(false); // State for Sound button
-  const [isHighlightWordsSelected, setIsHighlightWordsSelected] = useState(true); // State for Highlight button
+  const [isHighlightWordsSelected, setIsHighlightWordsSelected] =
+    useState(true); // State for Highlight button
 
+  const showData = () => {
+    // console.log(typingData.Easy["Current Affairs"][1]);
+    console.log(Object.keys(typingData.Medium));
+    // select a random item from a list in javascript
+    // const randomItem = ;
+    // console.log(randomItem);
+  };
+
+  const handleSampleTextSetup = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(Object.keys(typingData.Medium));
+    console.log(e.target.value);
+  };
 
   useEffect(() => {
     if (isTimerRunning > 0 && !soundStartedRef.current && isSoundSelected) {
@@ -107,8 +143,35 @@ function TypingTestDynamic() {
     setTestStartTime(-1);
   };
 
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value as
+      | "Current Affairs"
+      | "Government Schemes"
+      | "Law"
+      | "Science and Technology"
+      | "Environment"
+      | "Economy"; // Type assertion
+    setSampleTextCategory(value);
+
+    const randomTextIndexNew = Math.floor(Math.random() * typingData[sampleTextDifficulty][value].length);
+    setSampleText(typingData[sampleTextDifficulty][value][randomTextIndexNew]);
+  };
+
+  const handleDifficultyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    // Ensure the value is one of the allowed types
+    const value = e.target.value as keyof typeof typingData;
+    setSampleTextDifficulty(value);
+    const randomTextIndexNew = Math.floor(Math.random() * typingData[value][sampleTextCategory].length);
+    setSampleText(typingData[value][sampleTextCategory][randomTextIndexNew]);
+  };
+
+  useEffect(() => {
+    // Assert that sampleTextDifficulty and sampleTextCategory are valid keys
+  }, [sampleTextCategory, sampleTextDifficulty]);
+
   return (
     <div className="container mx-auto p-4">
+      {/* <button onClick={showData}>Show Data</button> */}
       {showPopup && (
         <ResultPopUp
           testStartTime={testStartTime}
@@ -121,31 +184,67 @@ function TypingTestDynamic() {
           resetTimer={resetTimer}
         />
       )}
-      <div className="text-center mb-4">
-        <h1 className="text-2xl font-bold">Typing Test</h1>
+      <div
+        className="text-center mb-4"
+        style={{ marginTop: "0px", paddingTop: "0px" }}
+      >
+        <h1
+          className="text-2xl font-bold"
+          style={{ marginTop: "0px", paddingTop: "0px" }}
+        >
+          Typing Practice
+        </h1>
       </div>
       <div className="text-container" style={{ height: "60vh" }}>
         <div className="timer-container">
-        <button 
-          style={{ 
-            marginRight: "10px", 
-            backgroundColor: isSoundSelected ? "blue" : "lightgrey", // Change color based on selection
-            color: isSoundSelected ? "white" : "black" // Change text color for better visibility
-          }} 
-          onClick={() => setIsSoundSelected(!isSoundSelected)}
-        >
-          Sound
-        </button>
-        <button 
-          style={{ 
-            marginRight: "10px", 
-            backgroundColor: isHighlightWordsSelected ? "blue" : "lightgrey", // Change color based on selection
-            color: isHighlightWordsSelected ? "white" : "black" // Change text color for better visibility
-          }} 
-          onClick={() => setIsHighlightWordsSelected(!isHighlightWordsSelected)} 
-        >
-          Highlight Words
-        </button>
+          <select
+            onChange={handleDifficultyChange}
+            defaultValue={sampleTextDifficulty}
+          >
+            <option value="Difficulty" disabled>
+              Difficulty
+            </option>
+            {textDifficultyLevelList.map((difficultyLevel) => (
+              <option key={difficultyLevel} value={difficultyLevel}>
+                {difficultyLevel}
+              </option>
+            ))}
+          </select>
+          <select
+            onChange={handleCategoryChange}
+            defaultValue={sampleTextCategory}
+          >
+            <option value="Category" disabled>
+              Text Category
+            </option>
+            {textCategoryList.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+          <button
+            style={{
+              marginRight: "10px",
+              backgroundColor: isSoundSelected ? "blue" : "lightgrey", // Change color based on selection
+              color: isSoundSelected ? "white" : "black", // Change text color for better visibility
+            }}
+            onClick={() => setIsSoundSelected(!isSoundSelected)}
+          >
+            Sound
+          </button>
+          <button
+            style={{
+              marginRight: "10px",
+              backgroundColor: isHighlightWordsSelected ? "blue" : "lightgrey", // Change color based on selection
+              color: isHighlightWordsSelected ? "white" : "black", // Change text color for better visibility
+            }}
+            onClick={() =>
+              setIsHighlightWordsSelected(!isHighlightWordsSelected)
+            }
+          >
+            Highlight Words
+          </button>
           <TimerButton
             initialTime={time}
             isTimerRunning={isTimerRunning}
@@ -154,21 +253,24 @@ function TypingTestDynamic() {
             provideCurrentTime={testStartTimeHandler}
             setTime={setTime}
           />
-
         </div>
         <p className="typing-text">
           {words.map((word, index) => (
             <span
               key={index}
-              className={`word ${isHighlightWordsSelected && index === currentWordIndex ? "word-current" : ""}`}
+              className={`word ${
+                isHighlightWordsSelected && index === currentWordIndex
+                  ? "word-current"
+                  : ""
+              }`}
               style={{
                 color: isHighlightWordsSelected
-                  ? (index >= currentWordIndex
-                      ? "black" // Default color for untyped words
-                      : wordCorrectnessList[index]
-                      ? "green" // Color for correct words
-                      : "red") // Color for incorrect words
-                  : "inherit" // Use the default text color when highlighting is not selected
+                  ? index >= currentWordIndex
+                    ? "black" // Default color for untyped words
+                    : wordCorrectnessList[index]
+                    ? "green" // Color for correct words
+                    : "red" // Color for incorrect words
+                  : "inherit", // Use the default text color when highlighting is not selected
               }}
             >
               {word}{" "}
@@ -176,7 +278,10 @@ function TypingTestDynamic() {
           ))}
         </p>
       </div>
-      <div className="input-container" style={{ padding: "0px", height: "10px", marginTop: "30px" }}>
+      <div
+        className="input-container"
+        style={{ padding: "0px", height: "10px", marginTop: "30px" }}
+      >
         <input
           value={userInput}
           onChange={handleInputChange}
